@@ -7,7 +7,7 @@ using WsparcieCovid.Entities;
 
 namespace WsparcieCovid.Repositories
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         private readonly DataContext context;
 
@@ -39,21 +39,28 @@ namespace WsparcieCovid.Repositories
         
         public async Task<Order> GetAsync(int id)
         {
-            return await context.Orders.FindAsync(id);
+            return await context.Orders
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .Include(e => e.OrderProducts)
+                .ThenInclude(e => e.Product)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<Order>> GetAllContributorAsync(int contributorId)
+        public async Task<Order[]> GetAllContributorAsync(int contributorId)
         {
             return await context.Orders
                 .Where(d => d.Contributor.Id == contributorId)
-                .ToListAsync();
+                .ToArrayAsync();
         }
         
-        public async Task<List<Order>> GetAllEntrepreneurAsync(int entrepreneurId)
+        public async Task<Order[]> GetAllEntrepreneurAsync(int entrepreneurId)
         {
             return await context.Orders
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
-                .ToListAsync();
+                .ToArrayAsync();
         }
     }
 }

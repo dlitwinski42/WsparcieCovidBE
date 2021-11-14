@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WsparcieCovid.Entities
@@ -7,18 +8,15 @@ namespace WsparcieCovid.Entities
     {
         [Key] public int Id { get; set; }
         
+        [Required] public string Name { get; set; }
+        
         [Required] public float Price { get; set; }
         
         [Required] public string Description { get; set; }
-        
-        [Required] public string OrderComment { get; set; }
 
-        [Required] public string ReturnMsg { get; set; }
+        [ForeignKey("EntrepreneurId")] public Entrepreneur Entrepreneur { get; set; }
         
-        [Required]
-        [Column(TypeName = "varchar(20)")]
-        
-        public OrderStatus Status { get; set; }
+        public ICollection<OrderProducts> OrderProducts { get; set; }
     }
 
     

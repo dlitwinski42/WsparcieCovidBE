@@ -34,12 +34,18 @@ namespace WsparcieCovid.Repositories
 
         public async Task<Review[]> GetAllAsync()
         {
-            return await context.Reviews.ToArrayAsync();
+            return await context.Reviews
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
+                .ToArrayAsync();
         }
         
         public async Task<Review> GetAsync(int id)
         {
-            return await context.Reviews.FindAsync(id);
+            return await context.Reviews
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<Review[]> GetAllContributorAsync(int contributorId)
@@ -52,6 +58,8 @@ namespace WsparcieCovid.Repositories
         public async Task<Review[]> GetAllEntrepreneurAsync(int entrepreneurId)
         {
             return await context.Reviews
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
                 .ToArrayAsync();
         }  

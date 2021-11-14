@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Design.Serialization;
+﻿using System;
+using System.ComponentModel.Design.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WsparcieCovid.Data;
@@ -37,7 +38,8 @@ namespace WsparcieCovid.Services
                 Contributor = contributor,
                 Entrepreneur = entrepreneur,
                 Amount = amount,
-                Status = DonationStatus.Sent
+                Status = DonationStatus.Sent,
+                DateSent = DateTime.Now
             });
             
             context.Database?.CommitTransactionAsync();
@@ -59,6 +61,7 @@ namespace WsparcieCovid.Services
         {
             var donation = await donationRepository.GetAsync(id);
             donation.Status = DonationStatus.Confirmed;
+            donation.DateConfirmed = DateTime.Now;
             await donationRepository.UpdateAsync(donation);
             return new JsonResult(donation) {StatusCode = 200};
 

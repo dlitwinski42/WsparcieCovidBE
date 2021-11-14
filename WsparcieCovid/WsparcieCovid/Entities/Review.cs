@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WsparcieCovid.Entities
@@ -10,6 +11,8 @@ namespace WsparcieCovid.Entities
         [Required] public string ReviewBody { get; set; }
         
         [Required] public int Grade { get; set; }
+        
+        [Required] public DateTime Timestamp { get; set; }
         
         [ForeignKey("ContributorId")] public Contributor Contributor { get; set; }
         

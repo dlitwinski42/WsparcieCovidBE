@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WsparcieCovid.Entities
@@ -12,6 +13,10 @@ namespace WsparcieCovid.Entities
         [ForeignKey("EntrepreneurId")] public Entrepreneur Entrepreneur { get; set; }
         
         [Required] public float Amount { get; set; }
+        
+        public DateTime DateSent { get; set; }
+        
+        public DateTime DateConfirmed { get; set; }
         
         [Required]
         [Column(TypeName = "varchar(20)")]

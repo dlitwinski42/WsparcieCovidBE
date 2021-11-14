@@ -17,5 +17,6 @@ namespace WsparcieCovid.Entities
         public Contributor Contributor { get; set; }
         
         public Entrepreneur Entrepreneur { get; set; }
+        
     }
 }

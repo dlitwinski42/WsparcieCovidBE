@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WsparcieCovid.Entities
@@ -9,6 +10,13 @@ namespace WsparcieCovid.Entities
         
         [Required] public string RedeemCode { get; set; }
         
+        [Required] public float Amount { get; set; }
+
+        public DateTime TimeOrdered;
+
+        public DateTime TimePaid;
+
+        public DateTime TimeUsed;
         [ForeignKey("ContributorId")] public Contributor Contributor { get; set; }
         
         [ForeignKey("EntrepreneurId")] public Entrepreneur Entrepreneur { get; set; }

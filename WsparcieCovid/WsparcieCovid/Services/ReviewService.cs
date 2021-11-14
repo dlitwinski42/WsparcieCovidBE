@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WsparcieCovid.Data;
 using WsparcieCovid.Entities;
@@ -36,6 +37,7 @@ namespace WsparcieCovid.Services
                 Contributor = contributor,
                 Entrepreneur = entrepreneur,
                 Grade = grade,
+                Timestamp = DateTime.Now,
                 ReviewBody = reviewBody
             });
             

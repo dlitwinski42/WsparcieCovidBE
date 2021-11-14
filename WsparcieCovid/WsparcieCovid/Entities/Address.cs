@@ -14,7 +14,7 @@ namespace WsparcieCovid.Entities
         [Required] public string HouseNumber { get; set; }
         
         [Required] public string FlatNumber { get; set; }
-        
+
         [ForeignKey("ContributorId")] public Contributor Contributor { get; set; }
         
         [ForeignKey("EntrepreneurId")] public Entrepreneur Entrepreneur { get; set; }

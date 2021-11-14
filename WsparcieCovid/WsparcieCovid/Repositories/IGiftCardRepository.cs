@@ -10,6 +10,8 @@ namespace WsparcieCovid.Repositories
         public Task<GiftCard> UpdateAsync(GiftCard giftCard);
         
         public Task<GiftCard> GetAsync(int id);
+        
+        public Task<GiftCard> GetAsync(string redeemCode);
 
         public Task<GiftCard[]> GetAllContributorAsync(int contributorId);
 

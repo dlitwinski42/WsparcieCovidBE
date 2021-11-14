@@ -20,6 +20,8 @@ namespace WsparcieCovid.Services
         private readonly IContributorRepository contributorRepository;
         private readonly IEntrepreneurRepository entrepreneurRepository;
         private readonly IRefreshTokenRepository refreshTokenRepository;
+        private readonly ISupportMethodsRepository supportMethodsRepository;
+        private readonly IAddressRepository addressRepository;
 
         private readonly string[] roles =
         {
@@ -32,7 +34,9 @@ namespace WsparcieCovid.Services
             IUserRepository userRepository,
             IContributorRepository contributorRepository,
             IEntrepreneurRepository entrepreneurRepository,
-            IRefreshTokenRepository refreshTokenRepository
+            IRefreshTokenRepository refreshTokenRepository,
+            ISupportMethodsRepository supportMethodsRepository,
+            IAddressRepository addressRepository
         )
         {
             this.context = context;
@@ -41,13 +45,29 @@ namespace WsparcieCovid.Services
             this.contributorRepository = contributorRepository;
             this.entrepreneurRepository = entrepreneurRepository;
             this.refreshTokenRepository = refreshTokenRepository;
+            this.addressRepository = addressRepository;
+            this.supportMethodsRepository = supportMethodsRepository;
         }
         
-        public async Task<IActionResult> CreateAsync(string role, string username, string password, string firstName, string lastName, string email,
+        public async Task<IActionResult> CreateAsync(
+            string role,
+            string username,
+            string password,
+            string firstName,
+            string lastName,
+            string email,
             string? name,
+            string? description,
             string? nipNumber,
             string? bankAccountNumber,
-            string? phoneNumber)
+            string? phoneNumber,
+            string? city,
+            string? street,
+            string? houseNumber,
+            string? flatNumber,
+            bool? supportDonation,
+            bool? supportGiftCard,
+            bool? supportOrder)
         {
             var existingUser = await userRepository.GetAsync(username);
 
@@ -70,17 +90,48 @@ namespace WsparcieCovid.Services
             switch (role)
             {
                 case "Contributor":
-                    createdUser.Contributor = await contributorRepository.AddAsync(new Contributor {User = createdUser});
+                    var contributor = await contributorRepository.AddAsync(new Contributor {User = createdUser});
+                    
+                    
+                    if (city != null)
+                    {
+                        contributor.Address = await addressRepository.AddAsync(new Address
+                        {
+                            City = city,
+                            Street = street,
+                            HouseNumber = houseNumber,
+                            FlatNumber = flatNumber,
+                            Contributor = contributor
+                        });
+                    }
+                    createdUser.Contributor = contributor;
                     break;
                 case "Entrepreneur":
-                    createdUser.Entrepreneur = await entrepreneurRepository.AddAsync(new Entrepreneur
+                    var entrepreneur = await entrepreneurRepository.AddAsync(new Entrepreneur
                     {
                         User = createdUser,
                         Name = name,
+                        Description = description,
                         NipNumber = nipNumber,
                         BankAccountNumber = bankAccountNumber,
                         PhoneNumber = phoneNumber
                     });
+                    entrepreneur.SupportMethods = await supportMethodsRepository.AddAsync(new SupportMethods
+                    {
+                        CanDonate =  (bool) supportDonation,
+                        CanGiftCard = (bool) supportGiftCard,
+                        CanOrder = (bool) supportOrder,
+                        Entrepreneur = entrepreneur
+                    });
+                    entrepreneur.Address = await addressRepository.AddAsync(new Address
+                    {
+                        City = city,
+                        Street = street,
+                        HouseNumber = houseNumber,
+                        FlatNumber = flatNumber,
+                        Entrepreneur = entrepreneur
+                    }); 
+                    createdUser.Entrepreneur = entrepreneur;
                     break;
             }
 

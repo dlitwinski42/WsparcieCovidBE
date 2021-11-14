@@ -14,41 +14,22 @@ namespace WsparcieCovid.Services
         {
             this.entrepreneurRepository = entrepreneurRepository;
         }
+        
 
-        Task<IActionResult> IEntrepreneurService.GetAllAsync()
+        public async Task<IActionResult> UpdateAsync(Entrepreneur entrepreneur)
         {
-            return GetAllAsync();
+            return new JsonResult(await entrepreneurRepository.UpdateAsync(entrepreneur));
         }
 
-        Task<IActionResult> IEntrepreneurService.GetAsync(int userId)
+        public async Task<IActionResult> GetAsync(int entrepreneurId)
         {
-            return GetAsync(userId);
+            return new JsonResult(await entrepreneurRepository.GetAsync(entrepreneurId)) {StatusCode = 200};
         }
 
-        public Task<IActionResult> UpdateAsync()
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public Task<IActionResult> DeleteAsync()
+        public async Task<IActionResult> GetAllAsync()
         {
-            throw new System.NotImplementedException();
-        }
-
-        Task<IActionResult> GetAsync(int userId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public Task<IActionResult> CreateAsync(string role, string login, string password, string firstName, string lastName, string email,
-            string? name, string? nipNumber, string? bankAccountNumber, string? phoneNumber)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        Task<IActionResult> GetAllAsync()
-        {
-            throw new System.NotImplementedException();
+            return new JsonResult(await entrepreneurRepository.GetAllAsync()) {StatusCode = 200};
         }
     }
 }

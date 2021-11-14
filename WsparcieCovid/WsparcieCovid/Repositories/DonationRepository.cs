@@ -39,12 +39,18 @@ namespace WsparcieCovid.Repositories
 
         public async Task<Donation[]> GetAllAsync()
         {
-            return await context.Donations.ToArrayAsync();
+            return await context.Donations
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
+                .ToArrayAsync();
         }
         
         public async Task<Donation> GetAsync(int id)
         {
-            return await context.Donations.FindAsync(id);
+            return await context.Donations
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         Task<Donation[]> IDonationRepository.GetAllContributorAsync(int contributorId)
@@ -65,6 +71,8 @@ namespace WsparcieCovid.Repositories
         public async Task<List<Donation>> GetAllContributorAsync(int contributorId)
         {
             return await context.Donations
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
                 .Where(d => d.Contributor.Id == contributorId)
                 .ToListAsync();
         }
@@ -72,6 +80,8 @@ namespace WsparcieCovid.Repositories
         public async Task<List<Donation>> GetAllEntrepreneurAsync(int entrepreneurId)
         {
             return await context.Donations
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
                 .ToListAsync();
         }

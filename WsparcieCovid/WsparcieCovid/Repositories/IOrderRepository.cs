@@ -5,16 +5,16 @@ namespace WsparcieCovid.Repositories
 {
     public interface IOrderRepository
     {
-         public Task<Donation> AddAsync(Order order);
+         public Task<Order> AddAsync(Order order);
                 
-         public Task<Donation> UpdateAsync(Order order);
+         public Task<Order> UpdateAsync(Order order);
                 
-         public Task<Donation> GetAsync(int id);
+         public Task<Order> GetAsync(int id);
         
-         public Task<Donation[]> GetAllContributorAsync(int contributorId);
+         public Task<Order[]> GetAllContributorAsync(int contributorId);
         
-         public Task<Donation[]> GetAllEntrepreneurAsync(int entrepreneurId);
+         public Task<Order[]> GetAllEntrepreneurAsync(int entrepreneurId);
         
-         public Task<Donation[]> GetAllAsync();
+         public Task<Order[]> GetAllAsync();
     }
 }

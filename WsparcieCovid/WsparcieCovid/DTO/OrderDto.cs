@@ -2,7 +2,7 @@
 
 namespace WsparcieCovid.DTO
 {
-    public class GiftCardDto
+    public class OrderDto
     {
         [Required(ErrorMessage = "Contributor Id is required")]
         public int ContributorId { get; set; }
@@ -10,6 +10,6 @@ namespace WsparcieCovid.DTO
         [Required(ErrorMessage = "Entrepreneur Id is required")]
         public int EntrepreneurId { get; set; }
         
-        public float Amount { get; set; }
+        public string OrderComments { get; set; }
     }
 }

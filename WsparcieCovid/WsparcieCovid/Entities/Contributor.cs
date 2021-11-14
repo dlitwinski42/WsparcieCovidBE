@@ -17,5 +17,7 @@ namespace WsparcieCovid.Entities
         public ICollection<Order> Orders { get; set; }
         
         public ICollection<Review> Reviews { get; set; }
+        
+        public Address Address { get; set; }
     }
 }

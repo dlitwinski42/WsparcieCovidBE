@@ -73,6 +73,14 @@ namespace WsparcieCovid
             services.AddTransient<IReviewService, ReviewService>();
             services.AddTransient<IGiftCardRepository, GiftCardRepository>();
             services.AddTransient<IGiftCardService, GiftCardService>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IEntrepreneurService, EntrepreneurService>();
+            services.AddTransient<IOrderProductsRepository, OrderProductsRepository>();
+            services.AddTransient<ISupportMethodsRepository, SupportMethodsRepository>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);

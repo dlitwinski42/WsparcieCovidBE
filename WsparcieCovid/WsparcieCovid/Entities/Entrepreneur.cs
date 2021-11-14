@@ -10,6 +10,8 @@ namespace WsparcieCovid.Entities
         [Key] public int Id { get; set; }
         
         [Required] [MaxLength(100)] public string Name { get; set; }
+        
+        [Required] [MaxLength(200)] public string Description { get; set; }
 
         [Required] [MaxLength(10)] public string NipNumber { get; set; }
         
@@ -24,6 +26,12 @@ namespace WsparcieCovid.Entities
         public ICollection<GiftCard> GiftCards { get; set; }
         
         public ICollection<Review> Reviews { get; set; }
+        
+        public ICollection<Product> Products { get; set; }
+        
+        public SupportMethods SupportMethods { get; set; }
+        
+        public Address Address { get; set; }
     }
     
 }

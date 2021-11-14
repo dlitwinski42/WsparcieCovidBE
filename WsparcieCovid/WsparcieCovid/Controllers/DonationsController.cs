@@ -41,7 +41,7 @@ namespace WsparcieCovid.Controllers
         [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAsync(int id)
         {
-            return new JsonResult(await donationService.GetAsync(id));
+            return await donationService.GetAsync(id);
         }
         
         

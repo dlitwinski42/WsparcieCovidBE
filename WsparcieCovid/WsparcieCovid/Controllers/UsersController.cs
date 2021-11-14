@@ -41,7 +41,25 @@ namespace WsparcieCovid.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateAsync([FromBody] UsersDto userDto)
         {
-            return await userService.CreateAsync(userDto.Role, userDto.Username, userDto.Password, userDto.FirstName, userDto.LastName, userDto.Email, userDto.Name, userDto.NipNumber, userDto.BankAccountNumber, userDto.PhoneNumber);
+            return await userService.CreateAsync(
+                userDto.Role,
+                userDto.Username,
+                userDto.Password,
+                userDto.FirstName,
+                userDto.LastName,
+                userDto.Email,
+                userDto.Name,
+                userDto.Description,
+                userDto.NipNumber,
+                userDto.BankAccountNumber,
+                userDto.PhoneNumber,
+                userDto.City,
+                userDto.Street,
+                userDto.HouseNumber,
+                userDto.flatNumber,
+                userDto.supportDonation,
+                userDto.supportGiftCard,
+                userDto.supportOrder);
         }
         
         [HttpPost("/authenticate")]

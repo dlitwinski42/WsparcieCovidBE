@@ -34,17 +34,33 @@ namespace WsparcieCovid.Repositories
 
         public async Task<GiftCard[]> GetAllAsync()
         {
-            return await context.GiftCards.ToArrayAsync();
+            return await context.GiftCards
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
+                .ToArrayAsync();
         }
         
         public async Task<GiftCard> GetAsync(int id)
         {
-            return await context.GiftCards.FindAsync(id);
+            return await context.GiftCards
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task<GiftCard> GetAsync(string redeemCode)
+        {
+            return await context.GiftCards
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .FirstOrDefaultAsync(p => p.RedeemCode == redeemCode);
         }
 
         public async Task<GiftCard[]> GetAllContributorAsync(int contributorId)
         {
             return await context.GiftCards
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
                 .Where(d => d.Contributor.Id == contributorId)
                 .ToArrayAsync();
         }
@@ -52,6 +68,8 @@ namespace WsparcieCovid.Repositories
         public async Task<GiftCard[]> GetAllEntrepreneurAsync(int entrepreneurId)
         {
             return await context.GiftCards
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
                 .ToArrayAsync();
         }

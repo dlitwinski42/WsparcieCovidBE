@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WsparcieCovid.Data;
 using WsparcieCovid.Entities;
@@ -29,14 +31,20 @@ namespace WsparcieCovid.Services
         {
             var contributor = await contributorRepository.GetAsync(contributorId);
             var entrepreneur = await entrepreneurRepository.GetAsync(entrepreneurId);
+            string path = "";
             
-            context.Database?.BeginTransactionAsync();
+                path = Path.GetRandomFileName();
+                path = path.Replace(".", "");
+                path = path.Substring(0, 8);
+
+                context.Database?.BeginTransactionAsync();
             var createdReview = await giftCardRepository.AddAsync(new GiftCard
             {
                 Contributor = contributor,
                 Entrepreneur = entrepreneur,
                 Status = GiftCardStatus.Ordered,
-                RedeemCode = "DupaPaducha"
+                TimeOrdered = DateTime.Now,
+                RedeemCode = path
             });
             
             context.Database?.CommitTransactionAsync();
@@ -47,6 +55,11 @@ namespace WsparcieCovid.Services
         public async Task<IActionResult> GetAsync(int id)
         {
             return new JsonResult(await giftCardRepository.GetAsync(id)) {StatusCode = 200};
+        }
+
+        public async Task<IActionResult> GetAsync(string redeemCode)
+        {
+            return new JsonResult(await giftCardRepository.GetAsync(redeemCode)) {StatusCode = 200};
         }
 
         public async Task<IActionResult> GetAllAsync()
@@ -71,9 +84,11 @@ namespace WsparcieCovid.Services
             {
                 case "Paid":
                     giftCard.Status = GiftCardStatus.Paid;
+                    giftCard.TimePaid = DateTime.Now;
                     break;
                 case "Used":
                     giftCard.Status = GiftCardStatus.Used;
+                    giftCard.TimeUsed = DateTime.Now;
                     break;
             }
 
