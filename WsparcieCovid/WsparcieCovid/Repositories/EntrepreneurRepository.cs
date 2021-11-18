@@ -41,7 +41,10 @@ namespace WsparcieCovid.Repositories
 
         public async Task<Entrepreneur[]> GetAllAsync()
         {
-            return await context.Entrepreneurs.ToArrayAsync();
+            return await context.Entrepreneurs
+                .Include(e => e.Address)
+                .Include(e => e.SupportMethods)
+                .ToArrayAsync();
         }
         
         public async Task<Entrepreneur> GetAsync(int id)

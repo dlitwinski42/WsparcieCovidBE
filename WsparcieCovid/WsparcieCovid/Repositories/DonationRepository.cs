@@ -63,6 +63,11 @@ namespace WsparcieCovid.Repositories
             throw new System.NotImplementedException();
         }
 
+        public async Task<bool> CheckIfCodeExists(string donationCode)
+        {
+            return await context.Donations.AnyAsync(d => d.DonationCode == donationCode);
+        }
+
         public Task<Donation[]> GetAllEntrepreneurWithStatusAsync(int entrepreneurId, string status)
         {
             throw new System.NotImplementedException();

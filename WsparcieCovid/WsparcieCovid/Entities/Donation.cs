@@ -18,6 +18,8 @@ namespace WsparcieCovid.Entities
         
         public DateTime DateConfirmed { get; set; }
         
+        public string DonationCode { get; set; }
+        
         [Required]
         [Column(TypeName = "varchar(20)")]
         public DonationStatus Status { get; set; }
@@ -25,6 +27,6 @@ namespace WsparcieCovid.Entities
 
     public enum DonationStatus
     {
-        Sent, Confirmed
+        Created, Sent, Confirmed
     }
 }

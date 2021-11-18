@@ -31,11 +31,18 @@ namespace WsparcieCovid.Services
         {
             var contributor = await contributorRepository.GetAsync(contributorId);
             var entrepreneur = await entrepreneurRepository.GetAsync(entrepreneurId);
-            string path = "";
+            string code = "";
             
-                path = Path.GetRandomFileName();
-                path = path.Replace(".", "");
-                path = path.Substring(0, 8);
+            code = Path.GetRandomFileName();
+            code = code.Replace(".", "");
+            code = code.Substring(0, 8);
+
+                while (await giftCardRepository.CheckIfCodeExists(code))
+                {
+                    code = Path.GetRandomFileName();
+                    code = code.Replace(".", "");
+                    code = code.Substring(0, 8);
+                }
 
                 context.Database?.BeginTransactionAsync();
             var createdReview = await giftCardRepository.AddAsync(new GiftCard
@@ -44,7 +51,7 @@ namespace WsparcieCovid.Services
                 Entrepreneur = entrepreneur,
                 Status = GiftCardStatus.Ordered,
                 TimeOrdered = DateTime.Now,
-                RedeemCode = path
+                RedeemCode = code
             });
             
             context.Database?.CommitTransactionAsync();

@@ -150,7 +150,7 @@ namespace WsparcieCovid.Services
             }
 
             var tokens = jwtManager.GenerateTokens(login, await GetRoleAsync(login), DateTime.Now);
-
+            tokens.RoleId = await GetRoleIdAsync(login);
             var handler = new JwtSecurityTokenHandler();
             var refreshData = handler.ReadJwtToken(tokens.RefreshToken);
             var date = refreshData.ValidTo;
@@ -173,6 +173,19 @@ namespace WsparcieCovid.Services
                 return "Contributor";
             }
             return "Entrepreneur";
+        }
+
+        public async Task<int> GetRoleIdAsync(string login)
+        {
+            var user = await userRepository.GetAsync(login);
+            if (user.Contributor != null)
+            {
+                return user.Contributor.Id;
+            }
+            else
+            {
+                return user.Entrepreneur.Id;
+            }
         }
 
         public Task<object> GetCurrentUserAsync(HttpRequest request)

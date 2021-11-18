@@ -10,6 +10,8 @@ namespace WsparcieCovid.DTO
         [Required] public string RefreshToken { get; set; }
 
         [Required] public string Role { get; set; }
+        
+        public int RoleId { get; set; }
 
         public override bool Equals(object? obj)
         {

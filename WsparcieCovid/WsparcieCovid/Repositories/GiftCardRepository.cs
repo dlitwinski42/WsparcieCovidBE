@@ -32,6 +32,11 @@ namespace WsparcieCovid.Repositories
             return result.Entity;
         }
 
+        public async Task<bool> CheckIfCodeExists(string redeemCode)
+        {
+            return await context.GiftCards.AnyAsync(g => g.RedeemCode == redeemCode);
+        }
+
         public async Task<GiftCard[]> GetAllAsync()
         {
             return await context.GiftCards

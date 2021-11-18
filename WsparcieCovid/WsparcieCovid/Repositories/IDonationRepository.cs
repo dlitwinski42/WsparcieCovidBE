@@ -11,6 +11,7 @@ namespace WsparcieCovid.Repositories
         
         public Task<Donation> GetAsync(int id);
 
+        public Task<bool> CheckIfCodeExists(string donationCode);
         public Task<Donation[]> GetAllContributorAsync(int contributorId);
 
         public Task<Donation[]> GetAllEntrepreneurAsync(int entrepreneurId);

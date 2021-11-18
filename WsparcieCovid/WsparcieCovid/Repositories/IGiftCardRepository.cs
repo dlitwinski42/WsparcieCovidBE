@@ -13,6 +13,8 @@ namespace WsparcieCovid.Repositories
         
         public Task<GiftCard> GetAsync(string redeemCode);
 
+        public Task<bool> CheckIfCodeExists(string redeemCode);
+
         public Task<GiftCard[]> GetAllContributorAsync(int contributorId);
 
         public Task<GiftCard[]> GetAllEntrepreneurAsync(int entrepreneurId);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design.Serialization;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WsparcieCovid.Data;
@@ -31,6 +32,18 @@ namespace WsparcieCovid.Services
             
             var contributor = await contributorRepository.GetAsync(contributorId);
             var entrepreneur = await entrepreneurRepository.GetAsync(entrepreneurId);
+            string code = "";
+            
+            code = Path.GetRandomFileName();
+            code = code.Replace(".", "");
+            code = code.Substring(0, 8);
+
+            while (await donationRepository.CheckIfCodeExists(code))
+            {
+                code = Path.GetRandomFileName();
+                code = code.Replace(".", "");
+                code = code.Substring(0, 8);
+            }
             
             context.Database?.BeginTransactionAsync();
             var createdDonation = await donationRepository.AddAsync(new Donation
@@ -39,7 +52,8 @@ namespace WsparcieCovid.Services
                 Entrepreneur = entrepreneur,
                 Amount = amount,
                 Status = DonationStatus.Sent,
-                DateSent = DateTime.Now
+                DateSent = DateTime.Now,
+                DonationCode = code
             });
             
             context.Database?.CommitTransactionAsync();

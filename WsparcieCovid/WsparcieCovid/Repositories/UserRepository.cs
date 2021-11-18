@@ -38,12 +38,18 @@ namespace WsparcieCovid.Repositories
         
         public async Task<User> GetAsync(int id)
         {
-            return await context.Users.FindAsync(id);
+            return await context.Users
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<User> GetAsync(string login)
         {
-            return await context.Users.FirstOrDefaultAsync(user => user.Username == login);
+            return await context.Users
+                .Include(e => e.Entrepreneur)
+                .Include(e => e.Contributor)
+                .FirstOrDefaultAsync(user => user.Username == login);
         }
     }
 }
