@@ -40,7 +40,7 @@ namespace WsparcieCovid.Controllers
             return await productService.GetAllAsync();
         }
 
-        [HttpGet("/product/entrepreneur/{id}")]
+        [HttpGet("/product/entrepreneur/{entrepreneurId}")]
         [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllForEntrepreneurAsync(int entrepreneurId)
         {

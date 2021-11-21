@@ -10,6 +10,8 @@ namespace WsparcieCovid.Entities
         
         [Required] public int OrderId { get; set; }
         
+        [Required] public int Amount { get; set; }
+        
         [Required] public Order Order { get; set; }
         
         [Required] public Product Product { get; set; }

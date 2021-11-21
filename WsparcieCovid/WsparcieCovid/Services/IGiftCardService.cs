@@ -16,5 +16,9 @@ namespace WsparcieCovid.Services
         Task<IActionResult> GetAllForContributorAsync(int contributorId);
 
         Task<IActionResult> SetStatusAsync(int id, string status);
+
+        Task<IActionResult> GetActiveForEntrepreneurAsync(int entrepreneurId);
+
+        Task<IActionResult> GetAvailableForEntrepreneurAsync(int entrepreneurId);
     }
 }

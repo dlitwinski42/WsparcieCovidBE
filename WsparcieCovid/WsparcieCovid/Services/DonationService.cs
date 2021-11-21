@@ -81,5 +81,27 @@ namespace WsparcieCovid.Services
 
         }
         
+        public async Task<IActionResult> SendAsync(int id)
+        {
+            var donation = await donationRepository.GetAsync(id);
+            donation.Status = DonationStatus.Sent;
+            donation.DateSent = DateTime.Now;
+            await donationRepository.UpdateAsync(donation);
+            return new JsonResult(donation) {StatusCode = 200};
+
+        }
+
+        public async Task<IActionResult> GetActiveForEntrepreneurAsync(int entrepreneurId)
+        {
+            var donations = await donationRepository.GetActiveEntrepreneurAsync(entrepreneurId);
+            foreach(var donation in donations)
+            {
+                donation.Contributor.User.Email = null;
+                donation.Contributor.User.Username = null;
+                donation.Contributor.User.PassHash = null;
+            }
+            return new JsonResult(donations) {StatusCode = 200};
+        }
+        
     }
 }

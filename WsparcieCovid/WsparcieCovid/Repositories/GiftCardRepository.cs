@@ -78,5 +78,27 @@ namespace WsparcieCovid.Repositories
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
                 .ToArrayAsync();
         }
+        
+        public async Task<GiftCard[]> GetActiveEntrepreneurAsync(int entrepreneurId)
+        {
+            return await context.GiftCards
+                .Include(e => e.Contributor)
+                .ThenInclude(c => c.User)
+                .Include(e => e.Entrepreneur)
+                .Where(d => d.Entrepreneur.Id == entrepreneurId)
+                .Where(d => d.Status == GiftCardStatus.Ordered)
+                .ToArrayAsync();
+        }
+        
+        public async Task<GiftCard[]> GetAvailableEntrepreneurAsync(int entrepreneurId)
+        {
+            return await context.GiftCards
+                .Include(e => e.Contributor)
+                .ThenInclude(c => c.User)
+                .Include(e => e.Entrepreneur)
+                .Where(d => d.Entrepreneur.Id == entrepreneurId)
+                .Where(d => d.Status == GiftCardStatus.Paid)
+                .ToArrayAsync();
+        }
     }
 }

@@ -62,5 +62,16 @@ namespace WsparcieCovid.Repositories
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
                 .ToArrayAsync();
         }
+        
+        public async Task<Order[]> GetActiveEntrepreneurAsync(int entrepreneurId)
+        {
+            return await context.Orders
+                .Include(e => e.Contributor)
+                .ThenInclude(c => c.User)
+                .Include(e => e.Entrepreneur)
+                .Where(d => d.Entrepreneur.Id == entrepreneurId)
+                .Where(d => d.Status == OrderStatus.Ordered)
+                .ToArrayAsync();
+        }
     }
 }

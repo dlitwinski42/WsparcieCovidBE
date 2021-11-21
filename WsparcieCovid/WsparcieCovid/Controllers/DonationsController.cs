@@ -51,5 +51,19 @@ namespace WsparcieCovid.Controllers
         {
             return new JsonResult(await donationService.ConfirmAsync(id));
         }
+        
+        [HttpGet("/donation/{id}/send")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> SendAsync(int id)
+        {
+            return new JsonResult(await donationService.SendAsync(id));
+        }
+        
+        [HttpGet("/donation/active/{entrepreneurId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetActiveForEntrepreneur(int entrepreneurId)
+        {
+            return await donationService.GetActiveForEntrepreneurAsync(entrepreneurId);
+        }
     }
 }

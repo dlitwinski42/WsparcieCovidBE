@@ -14,9 +14,9 @@ namespace WsparcieCovid.Repositories
             this.context = context;
         }
         
-        public async Task<Address> AddAsync(Address supportMethods)
+        public async Task<Address> AddAsync(Address address)
         {
-            var result = context.Addresses.Add(supportMethods);
+            var result = context.Addresses.Add(address);
             await context.SaveChangesAsync();
 
             return result.Entity;

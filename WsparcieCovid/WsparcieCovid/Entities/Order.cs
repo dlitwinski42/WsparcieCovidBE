@@ -20,6 +20,7 @@ namespace WsparcieCovid.Entities
         public OrderStatus Status { get; set; }
         [ForeignKey("ContributorId")] public Contributor Contributor { get; set; }
         
+        [ForeignKey("AddressId")] public Address Address { get; set; }
         [ForeignKey("EntrepreneurId")] public Entrepreneur Entrepreneur { get; set; }
         
         public ICollection<OrderProducts> OrderProducts { get; set; }
@@ -27,6 +28,6 @@ namespace WsparcieCovid.Entities
     
     public enum OrderStatus
     {
-        Ordered, Paid, Received
+        Ordered, Received
     }
 }

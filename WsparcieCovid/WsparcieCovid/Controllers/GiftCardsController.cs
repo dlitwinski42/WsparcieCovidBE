@@ -59,5 +59,19 @@ namespace WsparcieCovid.Controllers
         {
             return await giftCardService.GetAllForEntrepreneurAsync(entrepreneurId);
         }
+        
+        [HttpGet("/giftcard/active/{entrepreneurId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetActiveForEntrepreneur(int entrepreneurId)
+        {
+            return await giftCardService.GetActiveForEntrepreneurAsync(entrepreneurId);
+        }
+        
+        [HttpGet("/giftcard/available/{entrepreneurId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAvailableForEntrepreneur(int entrepreneurId)
+        {
+            return await giftCardService.GetAvailableForEntrepreneurAsync(entrepreneurId);
+        }
     }
 }

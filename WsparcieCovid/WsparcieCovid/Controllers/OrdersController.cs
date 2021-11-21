@@ -22,7 +22,7 @@ namespace WsparcieCovid.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateAsync([FromBody] OrderDto orderDto)
         {
-            return await orderService.CreateAsync(orderDto.ContributorId,orderDto.EntrepreneurId);
+            return await orderService.CreateAsync(orderDto.ContributorId,orderDto.EntrepreneurId,orderDto.City,orderDto.Street,orderDto.HouseNumber,orderDto.flatNumber);
         }
         
         [HttpGet("/order")]
@@ -54,11 +54,26 @@ namespace WsparcieCovid.Controllers
             return new JsonResult(await orderService.AddProduct(orderId,productId));
         }
         
+        [HttpPost("/order/addProduct")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddProductAsyncV2([FromBody] AddProductDto addProductDto)
+        {
+            return await orderService.AddProductAsync(addProductDto.OrderId,addProductDto.ProductId, addProductDto.Amount);
+        }
+        
         [HttpGet("/order/{id}/recieved")]
         [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
         public async Task<IActionResult> SetRecievedAsync(int id)
         {
             return new JsonResult(await orderService.ChangeStatusAsync(id, "Recieved"));
+        }
+        
+        [HttpGet("/order/active/{entrepreneurId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetActiveForEntrepreneur(int entrepreneurId)
+        {
+            return await orderService.GetActiveForEntrepreneurAsync(entrepreneurId);
         }
         
     }

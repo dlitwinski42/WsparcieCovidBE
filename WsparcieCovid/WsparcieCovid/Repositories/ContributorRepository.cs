@@ -48,7 +48,9 @@ namespace WsparcieCovid.Repositories
         
         public async Task<Contributor> GetAsync(int id)
         {
-            return await context.Contributors.FindAsync(id);
+            return await context.Contributors
+                .Include(a=> a.Address)
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
 
     }

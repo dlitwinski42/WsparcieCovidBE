@@ -103,5 +103,29 @@ namespace WsparcieCovid.Services
             return new JsonResult(giftCard) {StatusCode = 200};
 
         }
+        
+        public async Task<IActionResult> GetActiveForEntrepreneurAsync(int entrepreneurId)
+        {
+            var giftcards = await giftCardRepository.GetActiveEntrepreneurAsync(entrepreneurId);
+            foreach(var giftcard in giftcards)
+            {
+                giftcard.Contributor.User.Email = null;
+                giftcard.Contributor.User.Username = null;
+                giftcard.Contributor.User.PassHash = null;
+            }
+            return new JsonResult(giftcards) {StatusCode = 200};
+        }
+        
+        public async Task<IActionResult> GetAvailableForEntrepreneurAsync(int entrepreneurId)
+        {
+            var giftcards = await giftCardRepository.GetAvailableEntrepreneurAsync(entrepreneurId);
+            foreach(var giftcard in giftcards)
+            {
+                giftcard.Contributor.User.Email = null;
+                giftcard.Contributor.User.Username = null;
+                giftcard.Contributor.User.PassHash = null;
+            }
+            return new JsonResult(giftcards) {StatusCode = 200};
+        }
     }
 }
