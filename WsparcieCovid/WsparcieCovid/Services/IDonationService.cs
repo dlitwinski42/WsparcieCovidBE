@@ -12,5 +12,9 @@ namespace WsparcieCovid.Services
         Task<IActionResult> ConfirmAsync(int id);
         Task<IActionResult> SendAsync(int id);
         Task<IActionResult> GetActiveForEntrepreneurAsync(int entrepreneurId);
+        
+        Task<IActionResult> GetConfirmedForEntrepreneurAsync(int entrepreneurId);
+        
+        Task<IActionResult> GetConfirmedForContributorAsync(int contributorId);
     }
 }

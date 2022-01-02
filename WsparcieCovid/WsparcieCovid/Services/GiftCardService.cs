@@ -27,7 +27,7 @@ namespace WsparcieCovid.Services
             this.entrepreneurRepository = entrepreneurRepository;
         }
         
-        public async Task<IActionResult> CreateAsync(int contributorId, int entrepreneurId)
+        public async Task<IActionResult> CreateAsync(int contributorId, int entrepreneurId, float amount)
         {
             var contributor = await contributorRepository.GetAsync(contributorId);
             var entrepreneur = await entrepreneurRepository.GetAsync(entrepreneurId);
@@ -51,7 +51,8 @@ namespace WsparcieCovid.Services
                 Entrepreneur = entrepreneur,
                 Status = GiftCardStatus.Ordered,
                 TimeOrdered = DateTime.Now,
-                RedeemCode = code
+                RedeemCode = code,
+                Amount = amount
             });
             
             context.Database?.CommitTransactionAsync();
@@ -94,6 +95,7 @@ namespace WsparcieCovid.Services
                     giftCard.TimePaid = DateTime.Now;
                     break;
                 case "Used":
+                    giftCard.Status = GiftCardStatus.Failed;
                     giftCard.Status = GiftCardStatus.Used;
                     giftCard.TimeUsed = DateTime.Now;
                     break;
@@ -125,6 +127,24 @@ namespace WsparcieCovid.Services
                 giftcard.Contributor.User.Username = null;
                 giftcard.Contributor.User.PassHash = null;
             }
+            return new JsonResult(giftcards) {StatusCode = 200};
+        }
+        
+        public async Task<IActionResult> GetUsedForEntrepreneurAsync(int entrepreneurId)
+                {
+                    var giftcards = await giftCardRepository.GetUsedEntrepreneurAsync(entrepreneurId);
+                    foreach(var giftcard in giftcards)
+                    {
+                        giftcard.Contributor.User.Email = null;
+                        giftcard.Contributor.User.Username = null;
+                        giftcard.Contributor.User.PassHash = null;
+                    }
+                    return new JsonResult(giftcards) {StatusCode = 200};
+                }
+        
+        public async Task<IActionResult> GetUsedForContributorAsync(int contributorId)
+        {
+            var giftcards = await giftCardRepository.GetUsedContributorAsync(contributorId);
             return new JsonResult(giftcards) {StatusCode = 200};
         }
     }

@@ -76,5 +76,19 @@ namespace WsparcieCovid.Controllers
             return await orderService.GetActiveForEntrepreneurAsync(entrepreneurId);
         }
         
+        
+        [HttpGet("/order/delivered/{entrepreneurId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDeliveredForEntrepreneur(int entrepreneurId)
+        {
+            return await orderService.GetDeliveredForEntrepreneurAsync(entrepreneurId);
+        }
+        
+        [HttpGet("/order/history/{contributorId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDeliveredForContributor(int contributorId)
+        {
+            return await orderService.GetDeliveredForContributorAsync(contributorId);
+        }
     }
 }

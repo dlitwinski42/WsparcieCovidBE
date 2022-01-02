@@ -5,7 +5,7 @@ namespace WsparcieCovid.Services
 {
     public interface IGiftCardService
     {
-        Task<IActionResult> CreateAsync(int contributorId, int entrepreneurId);
+        Task<IActionResult> CreateAsync(int contributorId, int entrepreneurId, float amount);
 
         Task<IActionResult> GetAsync(int id);
 
@@ -20,5 +20,9 @@ namespace WsparcieCovid.Services
         Task<IActionResult> GetActiveForEntrepreneurAsync(int entrepreneurId);
 
         Task<IActionResult> GetAvailableForEntrepreneurAsync(int entrepreneurId);
+        
+        Task<IActionResult> GetUsedForEntrepreneurAsync(int entrepreneurId);
+        
+        Task<IActionResult> GetUsedForContributorAsync(int contributorId);
     }
 }

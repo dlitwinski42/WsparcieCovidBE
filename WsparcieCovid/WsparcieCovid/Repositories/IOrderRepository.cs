@@ -18,5 +18,9 @@ namespace WsparcieCovid.Repositories
          public Task<Order[]> GetAllAsync();
 
          public  Task<Order[]> GetActiveEntrepreneurAsync(int entrepreneurId);
+         
+         public  Task<Order[]> GetDeliveredEntrepreneurAsync(int entrepreneurId);
+         
+         public  Task<Order[]> GetDeliveredContributorAsync(int contributorId);
     }
 }

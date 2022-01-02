@@ -39,19 +39,18 @@ namespace WsparcieCovid.Controllers
             return await reviewService.GetAllAsync();
         }
         
-        [HttpGet("/review/contributor/{id}")]
+        [HttpGet("/review/contributor/{contributorId}")]
         [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllForContributorAsync(int contributorId)
         {
             return await reviewService.GetAllForContributorAsync(contributorId);
         }
         
-        [HttpGet("/review/entrepreneur/{id}")]
+        [HttpGet("/review/entrepreneur/{entrepreneurId}")]
         [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllForEntrepreneurAsync(int entrepreneurId)
         {
             return await reviewService.GetAllForEntrepreneurAsync(entrepreneurId);
         }
-        
     }
 }

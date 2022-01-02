@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WsparcieCovid.Data;
@@ -9,9 +10,10 @@ using WsparcieCovid.Data;
 namespace WsparcieCovid.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211027163414_UpdatedEntities")]
+    partial class UpdatedEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,11 +52,9 @@ namespace WsparcieCovid.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContributorId")
-                        .IsUnique();
+                    b.HasIndex("ContributorId");
 
-                    b.HasIndex("EntrepreneurId")
-                        .IsUnique();
+                    b.HasIndex("EntrepreneurId");
 
                     b.ToTable("Addresses");
                 });
@@ -96,9 +96,6 @@ namespace WsparcieCovid.Migrations
                     b.Property<DateTime>("DateSent")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("DonationCode")
-                        .HasColumnType("text");
-
                     b.Property<int?>("EntrepreneurId")
                         .HasColumnType("integer");
 
@@ -126,11 +123,6 @@ namespace WsparcieCovid.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -165,9 +157,6 @@ namespace WsparcieCovid.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<float>("Amount")
-                        .HasColumnType("real");
-
                     b.Property<int?>("ContributorId")
                         .HasColumnType("integer");
 
@@ -198,9 +187,6 @@ namespace WsparcieCovid.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("ContributorId")
                         .HasColumnType("integer");
 
@@ -222,38 +208,11 @@ namespace WsparcieCovid.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.HasIndex("ContributorId");
 
                     b.HasIndex("EntrepreneurId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("WsparcieCovid.Entities.OrderProducts", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("WsparcieCovid.Entities.Product", b =>
@@ -277,9 +236,14 @@ namespace WsparcieCovid.Migrations
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EntrepreneurId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Products");
                 });
@@ -403,12 +367,12 @@ namespace WsparcieCovid.Migrations
             modelBuilder.Entity("WsparcieCovid.Entities.Address", b =>
                 {
                     b.HasOne("WsparcieCovid.Entities.Contributor", "Contributor")
-                        .WithOne("Address")
-                        .HasForeignKey("WsparcieCovid.Entities.Address", "ContributorId");
+                        .WithMany()
+                        .HasForeignKey("ContributorId");
 
                     b.HasOne("WsparcieCovid.Entities.Entrepreneur", "Entrepreneur")
-                        .WithOne("Address")
-                        .HasForeignKey("WsparcieCovid.Entities.Address", "EntrepreneurId");
+                        .WithMany()
+                        .HasForeignKey("EntrepreneurId");
 
                     b.Navigation("Contributor");
 
@@ -465,10 +429,6 @@ namespace WsparcieCovid.Migrations
 
             modelBuilder.Entity("WsparcieCovid.Entities.Order", b =>
                 {
-                    b.HasOne("WsparcieCovid.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("WsparcieCovid.Entities.Contributor", "Contributor")
                         .WithMany("Orders")
                         .HasForeignKey("ContributorId");
@@ -477,30 +437,9 @@ namespace WsparcieCovid.Migrations
                         .WithMany()
                         .HasForeignKey("EntrepreneurId");
 
-                    b.Navigation("Address");
-
                     b.Navigation("Contributor");
 
                     b.Navigation("Entrepreneur");
-                });
-
-            modelBuilder.Entity("WsparcieCovid.Entities.OrderProducts", b =>
-                {
-                    b.HasOne("WsparcieCovid.Entities.Order", "Order")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WsparcieCovid.Entities.Product", "Product")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("WsparcieCovid.Entities.Product", b =>
@@ -508,6 +447,10 @@ namespace WsparcieCovid.Migrations
                     b.HasOne("WsparcieCovid.Entities.Entrepreneur", "Entrepreneur")
                         .WithMany("Products")
                         .HasForeignKey("EntrepreneurId");
+
+                    b.HasOne("WsparcieCovid.Entities.Order", null)
+                        .WithMany("Product")
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Entrepreneur");
                 });
@@ -538,8 +481,6 @@ namespace WsparcieCovid.Migrations
 
             modelBuilder.Entity("WsparcieCovid.Entities.Contributor", b =>
                 {
-                    b.Navigation("Address");
-
                     b.Navigation("Donations");
 
                     b.Navigation("GiftCards");
@@ -551,8 +492,6 @@ namespace WsparcieCovid.Migrations
 
             modelBuilder.Entity("WsparcieCovid.Entities.Entrepreneur", b =>
                 {
-                    b.Navigation("Address");
-
                     b.Navigation("Donations");
 
                     b.Navigation("GiftCards");
@@ -566,12 +505,7 @@ namespace WsparcieCovid.Migrations
 
             modelBuilder.Entity("WsparcieCovid.Entities.Order", b =>
                 {
-                    b.Navigation("OrderProducts");
-                });
-
-            modelBuilder.Entity("WsparcieCovid.Entities.Product", b =>
-                {
-                    b.Navigation("OrderProducts");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("WsparcieCovid.Entities.User", b =>

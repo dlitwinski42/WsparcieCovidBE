@@ -122,6 +122,7 @@ namespace WsparcieCovid.Services
             switch (status)
             {
                 case "Received":
+                    order.Status = OrderStatus.Failed;
                     order.Status = OrderStatus.Received;
                     order.DateReceived = DateTime.Now;
                     break;
@@ -165,6 +166,25 @@ namespace WsparcieCovid.Services
                 order.Contributor.User.Username = null;
                 order.Contributor.User.PassHash = null;
             }
+            return new JsonResult(orders) {StatusCode = 200};
+        }
+        
+        
+        public async Task<IActionResult> GetDeliveredForEntrepreneurAsync(int entrepreneurId)
+        {
+            var orders = await orderRepository.GetDeliveredEntrepreneurAsync(entrepreneurId);
+            foreach(var order in orders)
+            {
+                order.Contributor.User.Email = null;
+                order.Contributor.User.Username = null;
+                order.Contributor.User.PassHash = null;
+            }
+            return new JsonResult(orders) {StatusCode = 200};
+        }
+        
+        public async Task<IActionResult> GetDeliveredForContributorAsync(int contributorId)
+        {
+            var orders = await orderRepository.GetDeliveredContributorAsync(contributorId);
             return new JsonResult(orders) {StatusCode = 200};
         }
     }

@@ -28,6 +28,6 @@ namespace WsparcieCovid.Entities
     
     public enum OrderStatus
     {
-        Ordered, Received
+        Ordered, Received, Failed
     }
 }

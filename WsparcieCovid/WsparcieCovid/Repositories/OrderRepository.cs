@@ -69,8 +69,32 @@ namespace WsparcieCovid.Repositories
                 .Include(e => e.Contributor)
                 .ThenInclude(c => c.User)
                 .Include(e => e.Entrepreneur)
+                .Include(o => o.Address)
                 .Where(d => d.Entrepreneur.Id == entrepreneurId)
                 .Where(d => d.Status == OrderStatus.Ordered)
+                .ToArrayAsync();
+        }
+        
+        public async Task<Order[]> GetDeliveredEntrepreneurAsync(int entrepreneurId)
+        {
+            return await context.Orders
+                .Include(e => e.Contributor)
+                .ThenInclude(c => c.User)
+                .Include(e => e.Entrepreneur)
+                .Include(o => o.Address)
+                .Where(d => d.Entrepreneur.Id == entrepreneurId)
+                .Where(d => d.Status == OrderStatus.Received)
+                .ToArrayAsync();
+        }
+        
+        public async Task<Order[]> GetDeliveredContributorAsync(int entrepreneurId)
+        {
+            return await context.Orders
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
+                .Include(o => o.Address)
+                .Where(d => d.Entrepreneur.Id == entrepreneurId)
+                .Where(d => d.Status == OrderStatus.Received)
                 .ToArrayAsync();
         }
     }

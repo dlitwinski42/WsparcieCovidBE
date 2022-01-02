@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WsparcieCovid.Data;
@@ -9,9 +10,10 @@ using WsparcieCovid.Data;
 namespace WsparcieCovid.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211114173137_UpdatedAddress")]
+    partial class UpdatedAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +97,6 @@ namespace WsparcieCovid.Migrations
 
                     b.Property<DateTime>("DateSent")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("DonationCode")
-                        .HasColumnType("text");
 
                     b.Property<int?>("EntrepreneurId")
                         .HasColumnType("integer");
@@ -198,9 +197,6 @@ namespace WsparcieCovid.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int?>("AddressId")
-                        .HasColumnType("integer");
-
                     b.Property<int?>("ContributorId")
                         .HasColumnType("integer");
 
@@ -222,8 +218,6 @@ namespace WsparcieCovid.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
-
                     b.HasIndex("ContributorId");
 
                     b.HasIndex("EntrepreneurId");
@@ -237,9 +231,6 @@ namespace WsparcieCovid.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
@@ -465,10 +456,6 @@ namespace WsparcieCovid.Migrations
 
             modelBuilder.Entity("WsparcieCovid.Entities.Order", b =>
                 {
-                    b.HasOne("WsparcieCovid.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("WsparcieCovid.Entities.Contributor", "Contributor")
                         .WithMany("Orders")
                         .HasForeignKey("ContributorId");
@@ -476,8 +463,6 @@ namespace WsparcieCovid.Migrations
                     b.HasOne("WsparcieCovid.Entities.Entrepreneur", "Entrepreneur")
                         .WithMany()
                         .HasForeignKey("EntrepreneurId");
-
-                    b.Navigation("Address");
 
                     b.Navigation("Contributor");
 

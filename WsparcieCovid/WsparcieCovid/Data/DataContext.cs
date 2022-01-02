@@ -23,5 +23,7 @@ namespace WsparcieCovid.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<SupportMethods> SupportMethods { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        
+        public DbSet<OrderProducts> OrderProducts { get; set; }
     }
 }

@@ -101,5 +101,26 @@ namespace WsparcieCovid.Repositories
                 .Where(d => d.Status == DonationStatus.Sent)
                 .ToArrayAsync();
         }
+        
+        public async Task<Donation[]> GetConfirmedEntrepreneurAsync(int entrepreneurId)
+        {
+            return await context.Donations
+                .Include(e => e.Contributor)
+                .ThenInclude(c => c.User)
+                .Include(e => e.Entrepreneur)
+                .Where(d => d.Entrepreneur.Id == entrepreneurId)
+                .Where(d => d.Status == DonationStatus.Confirmed)
+                .ToArrayAsync();
+        }
+        
+        public async Task<Donation[]> GetConfirmedContributorAsync(int contributorId)
+        {
+            return await context.Donations
+                .Include(e => e.Contributor)
+                .Include(e => e.Entrepreneur)
+                .Where(d => d.Contributor.Id == contributorId)
+                .Where(d => d.Status == DonationStatus.Confirmed)
+                .ToArrayAsync();
+        }
     }
 }

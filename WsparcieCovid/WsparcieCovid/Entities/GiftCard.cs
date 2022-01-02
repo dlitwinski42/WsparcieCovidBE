@@ -28,6 +28,6 @@ namespace WsparcieCovid.Entities
 
     public enum GiftCardStatus
     {
-        Ordered, Paid, Used
+        Ordered, Paid, Used, Failed
     }
 }

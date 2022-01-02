@@ -22,7 +22,7 @@ namespace WsparcieCovid.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateAsync([FromBody] GiftCardDto giftCardDto)
         {
-            return await giftCardService.CreateAsync(giftCardDto.ContributorId,giftCardDto.EntrepreneurId);
+            return await giftCardService.CreateAsync(giftCardDto.ContributorId,giftCardDto.EntrepreneurId, giftCardDto.Amount);
         }
         
         [HttpGet("/giftcard")]
@@ -72,6 +72,20 @@ namespace WsparcieCovid.Controllers
         public async Task<IActionResult> GetAvailableForEntrepreneur(int entrepreneurId)
         {
             return await giftCardService.GetAvailableForEntrepreneurAsync(entrepreneurId);
+        }
+        
+        [HttpGet("/giftcard/used/{entrepreneurId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUsedForEntrepreneur(int entrepreneurId)
+        {
+            return await giftCardService.GetUsedForEntrepreneurAsync(entrepreneurId);
+        }
+        
+        [HttpGet("/giftcard/history/{contributorId}")]
+        [ProducesResponseType(typeof(Donation), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUsedForContributor(int contributorId)
+        {
+            return await giftCardService.GetUsedForContributorAsync(contributorId);
         }
     }
 }

@@ -103,5 +103,23 @@ namespace WsparcieCovid.Services
             return new JsonResult(donations) {StatusCode = 200};
         }
         
+        public async Task<IActionResult> GetConfirmedForEntrepreneurAsync(int entrepreneurId)
+        {
+            var donations = await donationRepository.GetConfirmedEntrepreneurAsync(entrepreneurId);
+            foreach(var donation in donations)
+            {
+                donation.Contributor.User.Email = null;
+                donation.Contributor.User.Username = null;
+                donation.Contributor.User.PassHash = null;
+            }
+            return new JsonResult(donations) {StatusCode = 200};
+        }
+        
+        public async Task<IActionResult> GetConfirmedForContributorAsync(int contributorId)
+        {
+            var donations = await donationRepository.GetConfirmedContributorAsync(contributorId);
+            return new JsonResult(donations) {StatusCode = 200};
+        }
+        
     }
 }
